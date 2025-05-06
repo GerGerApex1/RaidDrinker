@@ -19,7 +19,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
@@ -28,6 +27,8 @@ jobs:
           VERSION="1.0.0-$(git rev-parse --short HEAD)"
           echo "VERSION=$VERSION"
           sed -i "s/^mod_version =.*$/mod_version = $VERSION/" gradle.properties
+      - name: Set gradlew permission
+        run: chmod +x gradlew
 
       - name: Build with Gradle
         run: ./gradlew build
