@@ -1,0 +1,38 @@
+name: Build with Gradle
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Set Version in gradle.properties
+        run: |
+          VERSION="1.0.0-$(git rev-parse --short HEAD)"
+          echo "VERSION=$VERSION"
+          sed -i "s/^mod_version =.*$/mod_version = $VERSION/" gradle.properties
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gradle Build
+          path: build/libs

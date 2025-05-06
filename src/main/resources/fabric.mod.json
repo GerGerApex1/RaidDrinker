@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "raiddrinker",
+  "version": "${version}",
+  "name": "RaidDrinker",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/GerGerApex1/RaidDrinker"
+  },
+  "license": "Apache-2.0",
+  "icon": "assets/raiddrinker/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "me.gergerapex1.raiddrinker.client.RaidDrinkerClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  },
+  "mixins": [
+    "raiddrinker.mixins.json"
+  ]
+}
