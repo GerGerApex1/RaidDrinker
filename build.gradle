@@ -3,12 +3,21 @@ plugins {
     id 'maven-publish'
 }
 
-version = project.mod_version
+version = "${project.mod_version}-${getGitHash()}"
 group = project.maven_group
 
 base {
     archivesName = project.archives_base_name
 }
+def getGitHash() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
 
 repositories {
     // Add repositories to retrieve artifacts from in here.
