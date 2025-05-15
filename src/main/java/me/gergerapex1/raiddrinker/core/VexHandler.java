@@ -13,29 +13,23 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 
 public class VexHandler {
-
-    public ClientPlayerEntity player;
-
-    public VexHandler(MinecraftClient client) {
-        this.player = client.player;
+    public static List<VexEntity> scanVexNearby(MinecraftClient client) {
+        Box box = client.player.getBoundingBox().expand(2.5);
+        return client.player.getWorld().getEntitiesByType(TypeFilter.instanceOf(VexEntity.class), box, entity -> true);
     }
-    public List<VexEntity> scanVexNearby() {
-        Box box = player.getBoundingBox().expand(2.5);
-        return player.getWorld().getEntitiesByType(TypeFilter.instanceOf(VexEntity.class), box, entity -> true);
-    }
-    public void lookAtEntity(Entity target) {
-        if (player == null) return;
+    public void lookAtEntity(MinecraftClient client, Entity target) {
+        if (client.player == null) return;
 
-        Vec3d playerEyePos = player.getEyePos();
+        Vec3d playerEyePos = client.player.getEyePos();
         Vec3d targetPos = target.getPos().add(0, target.getStandingEyeHeight() / 2.0, 0);
 
         double distance = playerEyePos.distanceTo(targetPos);
-        BlockHitResult blockHit = player.getWorld().raycast(new RaycastContext(
+        BlockHitResult blockHit = client.player.getWorld().raycast(new RaycastContext(
             playerEyePos,
             targetPos,
             RaycastContext.ShapeType.COLLIDER,
             RaycastContext.FluidHandling.NONE,
-            player
+            client.player
         ));
 
         if (blockHit.getType() != HitResult.Type.MISS &&
@@ -53,8 +47,7 @@ public class VexHandler {
         float pitch = (float) -(Math.toDegrees(Math.atan2(dy, distanceXZ)));
         float yaw = (float) (Math.toDegrees(Math.atan2(dz, dx)) - 90.0);
 
-        player.setYaw(yaw);
-        player.setPitch(pitch);
-
+        client.player.setYaw(yaw);
+        client.player.setPitch(pitch);
     }
 }
