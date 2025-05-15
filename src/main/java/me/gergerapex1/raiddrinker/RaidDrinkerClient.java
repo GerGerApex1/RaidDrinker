@@ -39,13 +39,13 @@ public class RaidDrinkerClient implements ClientModInitializer {
         toggleStatus.init();
 
         new RaidHandler().init();
-        VexHandler vexHandler = new VexHandler(MinecraftClient.getInstance());
+        VexHandler vexHandler = new VexHandler();
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (toggleMod && client.player != null) {
-                List<VexEntity> entityList = vexHandler.scanVexNearby();
+                List<VexEntity> entityList = vexHandler.scanVexNearby(client);
                 if(!entityList.isEmpty()) {
                     for (VexEntity vex : entityList) {
-                        vexHandler.lookAtEntity(vex);
+                        vexHandler.lookAtEntity(client, vex);
                         itemHandlers.switchToHotbarSword(client.player);
                         itemHandlers.attackWithSword(client);
                     }

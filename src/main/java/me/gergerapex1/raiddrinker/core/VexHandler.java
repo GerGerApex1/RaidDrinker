@@ -2,7 +2,6 @@ package me.gergerapex1.raiddrinker.core;
 
 import java.util.List;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.VexEntity;
 import net.minecraft.util.TypeFilter;
