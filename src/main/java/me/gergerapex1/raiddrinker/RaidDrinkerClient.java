@@ -41,8 +41,15 @@ public class RaidDrinkerClient implements ClientModInitializer {
         new RaidHandler().init();
         VexHandler vexHandler = new VexHandler();
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (client.player == null || client.world == null) return;
+            if (toggleModKeybind.wasPressed()) {
+                onTogglePitch = client.player.getPitch();
+                onToggleYaw = client.player.getYaw();
+            }
+        });
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (toggleMod && client.player != null) {
-                List<VexEntity> entityList = vexHandler.scanVexNearby(client);
+                List<VexEntity> entityList = VexHandler.scanVexNearby(client);
                 if(!entityList.isEmpty()) {
                     for (VexEntity vex : entityList) {
                         vexHandler.lookAtEntity(client, vex);
